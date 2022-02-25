@@ -17,18 +17,14 @@ export const Button = ({
       className={withBorder ? 'button with-border' : 'button'}
       onClick={onClick}
       type={type}
+      style={{
+        color: textColor,
+        fontSize: textSize,
+        fontWeight: textWeight,
+      }}
     >
       {icon}
-      <p
-        className={iconEnd ? 'text-first' : 'text-second'}
-        style={{
-          color: textColor,
-          fontSize: textSize,
-          fontWeight: textWeight,
-        }}
-      >
-        {title}
-      </p>
+      {title}
     </button>
   );
 };

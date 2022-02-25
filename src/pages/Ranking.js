@@ -63,7 +63,7 @@ class Ranking extends React.Component {
     return (
       <div className="container-btns">
         <Button
-          icon={<FaArrowLeft color="white" size="1.6rem" />}
+          icon={<FaArrowLeft size="1.6rem" />}
           title="Home"
           textSize="1.4rem"
           textColor="white"
@@ -72,7 +72,7 @@ class Ranking extends React.Component {
         />
         <div className="container-btns-right">
           <Button
-            icon={<MdDelete color="white" size="1.6rem" />}
+            icon={<MdDelete size="1.6rem" />}
             title="Clear"
             textSize="1.4rem"
             textColor="white"
@@ -82,9 +82,9 @@ class Ranking extends React.Component {
           <Button
             icon={
               orderRanking ? (
-                <FaLongArrowAltUp color="white" size="1.6rem" />
+                <FaLongArrowAltUp size="1.6rem" />
               ) : (
-                <FaLongArrowAltDown color="white" size="1.6rem" />
+                <FaLongArrowAltDown size="1.6rem" />
               )
             }
             title="Invert "
@@ -147,7 +147,7 @@ class Ranking extends React.Component {
               </div>
               <div className="content-grid-column">
                 <p>{player.name}</p>
-                <p>{`Score: ${player.score}`}</p>
+                <p>{`Score: ${player.score} pts`}</p>
               </div>
             </>
           ))}

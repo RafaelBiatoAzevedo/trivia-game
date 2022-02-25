@@ -64,7 +64,7 @@ class Home extends React.Component {
     return (
       <form className="form-login">
         <label
-          style={{ color: 'white', fontSize: '1.4rem' }}
+          style={{ color: 'white', fontSize: '1.4rem', fontWeight: '500' }}
           htmlFor="player-name"
         >
           Player Name
@@ -80,7 +80,7 @@ class Home extends React.Component {
         />
         <label
           className="margin-horizontal-30"
-          style={{ color: 'white', fontSize: '1.4rem' }}
+          style={{ color: 'white', fontSize: '1.4rem', fontWeight: '500' }}
           htmlFor="gravatar-email"
         >
           Gravatar E-mail
@@ -95,7 +95,7 @@ class Home extends React.Component {
           width="30rem"
         />
         <Button
-          icon={<BsPlayFill color="white" size="2rem" />}
+          icon={<BsPlayFill size="2rem" />}
           iconEnd
           title="Play"
           textColor="white"
@@ -115,7 +115,7 @@ class Home extends React.Component {
         <div className="container-top">
           {this.renderForm()}
           <Button
-            icon={<BsFillTrophyFill color="white" size="1.4rem" />}
+            icon={<BsFillTrophyFill size="1.4rem" />}
             title="Ranking"
             textColor="white"
             textWeight="600"
@@ -123,7 +123,7 @@ class Home extends React.Component {
             onClick={() => this.goFor('ranking')}
           ></Button>
           <Button
-            icon={<IoMdSettings color="white" size="1.8rem" />}
+            icon={<IoMdSettings size="1.8rem" />}
             title="Settings"
             textColor="white"
             textWeight="600"

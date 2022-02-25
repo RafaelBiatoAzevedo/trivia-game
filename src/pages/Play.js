@@ -173,16 +173,13 @@ class Play extends React.Component {
       updateStatusProp();
     }
 
-    if (asks.length > 0) {
-      const { category, question } = asks[answerIndex];
-      return (
-        <div className="container-main-play">
-          <Header />
+    return (
+      <div className="container-main-play">
+        <Header />
+        {asks.length > 0 ? (
           <div className="container-ask">
-            <h3 className="text-category" data-testid="question-category">
-              {category}
-            </h3>
-            <p data-testid="question-text">{question}</p>
+            <h1>{asks[answerIndex].category}</h1>
+            <h3>{asks[answerIndex].question}</h3>
             <div className="container-answers">
               {this.renderAnswers(asks[answerIndex].results)}
             </div>
@@ -191,13 +188,9 @@ class Play extends React.Component {
               this.elementButtonNext()}
             <Timer />
           </div>
-        </div>
-      );
-    }
-    return (
-      <div className="container-main-play">
-        <Header />
-        <p className="msg-loading">Loading... Prepare!</p>
+        ) : (
+          <div className="loader" style={{ fontSize: '2rem' }}></div>
+        )}
       </div>
     );
   }

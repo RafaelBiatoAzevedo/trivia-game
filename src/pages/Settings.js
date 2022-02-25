@@ -68,7 +68,7 @@ class Settings extends React.Component {
         </h1>
         <div className="container-btns">
           <Button
-            icon={<FaArrowLeft color="white" size="1.6rem" />}
+            icon={<FaArrowLeft size="1.6rem" />}
             title="Home"
             textSize="1.4rem"
             textColor="white"

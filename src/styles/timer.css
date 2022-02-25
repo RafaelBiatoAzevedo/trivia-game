@@ -1,0 +1,11 @@
+.container-timer {
+  align-items: center;
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.container-timer > p {
+  font-size: 2rem;
+  font-weight: 900;
+}
