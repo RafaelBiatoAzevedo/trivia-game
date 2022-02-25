@@ -9,17 +9,15 @@ class Header extends React.Component {
       <header className="container-header">
         <img
           className="img-gravatar"
-          src={ avatar }
+          src={avatar}
           alt="userImage"
           data-testid="header-profile-picture"
         />
         <div className="container-info">
-          <p data-testid="header-player-name">
-            { name }
-          </p>
+          <p data-testid="header-player-name">{name}</p>
           <p data-testid="header-score">
             {'Score '}
-            <span>{ score }</span>
+            <span>{score}</span>
           </p>
         </div>
       </header>

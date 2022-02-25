@@ -11,6 +11,8 @@ export const Input = ({
   textSize = '1rem',
   width = '15rem',
   autoFocus = false,
+  min,
+  max,
 }) => {
   return (
     <input
@@ -22,6 +24,8 @@ export const Input = ({
       value={value}
       placeholder={placeHolder}
       onChange={onChange}
+      min={min}
+      max={max}
     ></input>
   );
 };

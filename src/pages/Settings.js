@@ -1,15 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
+import { FaArrowLeft } from 'react-icons/fa';
+
+import { Button } from '../components/Button';
+import { Input } from '../components/Input';
+import { DropDown } from '../components/DropDown';
 import { updateSettings } from '../actions';
 import { getCategories } from '../serviceAPI';
 import '../styles/settings.css';
 
+const DIFFICULTIES = [
+  { id: 'easy', name: 'Easy' },
+  { id: 'medium', name: 'Medium' },
+  { id: 'hard', name: 'Hard' },
+];
+
+const TYPES_QUESTIONS = [
+  { id: 'multiple', name: 'Multiple choice' },
+  { id: 'boolean', name: 'True or False' },
+];
+
 class Settings extends React.Component {
   constructor(props) {
     super(props);
-    this.setCategories = this.setCategories.bind(this);
+    this.initialState = this.initialState.bind(this);
     this.state = {
       categories: [],
       settings: {},
@@ -17,140 +33,102 @@ class Settings extends React.Component {
   }
 
   componentDidMount() {
-    this.setCategories();
-    this.getSettings();
+    this.initialState();
   }
 
-  getSettings() {
+  goFor = (pageName) => {
+    this.props.history.push(`/${pageName}`);
+  };
+
+  initialState() {
     const { settings } = this.props;
     this.setState({ settings });
-  }
-
-  setCategories() {
     getCategories().then((categories) => this.setState({ categories }));
   }
 
   updateSettings(evt) {
     const { name, value } = evt.target;
+    let valueValid = null;
+    if (name === 'number' && value > 50) valueValid = 50;
+
     this.setState((state) => ({
       ...state,
-      settings: { ...state.settings, [`${name}`]: value },
+      settings: { ...state.settings, [`${name}`]: valueValid || value },
     }));
   }
 
-  renderInputNumber() {
-    const { settings } = this.state;
-    const { number } = settings;
-    return (
-      <label className="label-inputs" htmlFor="inputNumber">
-        Number Questions
-        <input
-          id="inputNumber"
-          onChange={(evt) => this.updateSettings(evt)}
-          name="number"
-          value={number}
-          className="inputs inputNumber"
-          type="number"
-        />
-      </label>
-    );
-  }
-
-  renderSelectCategory() {
-    const { settings, categories } = this.state;
-    const { category } = settings;
-    return (
-      <label className="label-inputs" htmlFor="inputCategory">
-        Category
-        <select
-          id="inputCategory"
-          onChange={(evt) => this.updateSettings(evt)}
-          name="category"
-          value={category}
-          className="inputs"
-        >
-          <option>All</option>
-          {categories.map((categoryItem) => (
-            <option key={categoryItem.id} value={categoryItem.id}>
-              {categoryItem.name}
-            </option>
-          ))}
-        </select>
-      </label>
-    );
-  }
-
-  renderSelectDifficulty() {
-    const { settings } = this.state;
-    const { difficulty } = settings;
-    return (
-      <label className="label-inputs" htmlFor="inputDifficulty">
-        Difficulty
-        <select
-          id="inputDifficulty"
-          onChange={(evt) => this.updateSettings(evt)}
-          name="difficulty"
-          value={difficulty}
-          className="inputs"
-        >
-          <option>All</option>
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-      </label>
-    );
-  }
-
-  renderSelectType() {
-    const { settings } = this.state;
-    const { type } = settings;
-    return (
-      <label className="label-inputs" htmlFor="inputType">
-        Type
-        <select
-          id="inputType"
-          onChange={(evt) => this.updateSettings(evt)}
-          name="type"
-          value={type}
-          className="inputs"
-        >
-          <option>All</option>
-          <option value="multiple">Multiple Choice</option>
-          <option value="boolean">True or False</option>
-        </select>
-      </label>
-    );
-  }
-
-  renderBtn() {
-    const { saveSettings } = this.props;
-    const { settings } = this.state;
-    return (
-      <Link className="link-btn" to="/">
-        <button
-          onClick={() => saveSettings(settings)}
-          className="btn-addSettings"
-          type="button"
-        >
-          Add Settings
-        </button>
-      </Link>
-    );
-  }
-
   render() {
+    const { settings, categories } = this.state;
+    const { number, category, difficulty, type } = settings;
+
     return (
       <div className="container-main-play">
         <h1 style={{ color: 'white', fontSize: '3rem', padding: '2rem 0' }}>
           Settings
         </h1>
-        <div className="container-dropdowns">
-          {this.renderInputNumber()}
-          {this.renderSelectCategory()}
-          {this.renderSelectDifficulty()}
-          {this.renderSelectType()}
-          {this.renderBtn()}
+        <div className="container-btns">
+          <Button
+            icon={<FaArrowLeft color="white" size="1.6rem" />}
+            title="Home"
+            textSize="1.4rem"
+            textColor="white"
+            textWeight="600"
+            onClick={() => this.goFor('')}
+          />
+        </div>
+        <div className="container-settings">
+          <label htmlFor="inputNumber">Number Questions</label>
+          <Input
+            width="100%"
+            textSize="1.6rem"
+            type="number"
+            name="number"
+            min={1}
+            max={50}
+            value={number}
+            onChange={(evt) => this.updateSettings(evt)}
+          ></Input>
+          <label className="label-inputs" htmlFor="inputCategory">
+            Categories
+          </label>
+          <DropDown
+            items={categories}
+            name="category"
+            value={category}
+            onChange={(evt) => this.updateSettings(evt)}
+          ></DropDown>
+          <label className="label-inputs" htmlFor="inputCategory">
+            Difficulties
+          </label>
+          <DropDown
+            items={DIFFICULTIES}
+            name="difficulty"
+            value={difficulty}
+            onChange={(evt) => this.updateSettings(evt)}
+          ></DropDown>
+          <label className="label-inputs" htmlFor="inputCategory">
+            Type Questions
+          </label>
+          <DropDown
+            items={TYPES_QUESTIONS}
+            name="type"
+            value={type}
+            onChange={(evt) => this.updateSettings(evt)}
+          ></DropDown>
+          <div className="container-btns">
+            <Button
+              title="Reset default"
+              textColor="#fff"
+              textSize="1.6rem"
+              textWeight="600"
+            ></Button>
+            <Button
+              title="Save settings"
+              textColor="#fff"
+              textSize="1.6rem"
+              textWeight="600"
+            ></Button>
+          </div>
         </div>
       </div>
     );

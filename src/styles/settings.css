@@ -1,30 +1,15 @@
-.container-dropdowns {
+.container-settings {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  height: 350px;
-  width: 300px;
 }
 
-.inputs {
-  background-color: white;
-  border-radius: 5px;
-  padding: 5px 10px;
-  width: 100%;
-
+.container-settings > label {
+  color: #fff;
+  font-size: 1.4rem;
+  padding-left: 1rem;
 }
 
-.inputNumber {
-  width: 277px;
-}
-
-.btn-addSettings {
-  cursor: pointer;
-  font-size: 17px;
-  border-radius: 5px;
-  padding: 4px 15px;
-}
-
-.link-btn {
-  align-self: center;
+.container-settings > input,
+select {
+  margin-bottom: 2rem;
 }
