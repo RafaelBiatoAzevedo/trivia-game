@@ -1,0 +1,30 @@
+.container-dropdowns {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 350px;
+  width: 300px;
+}
+
+.inputs {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 100%;
+
+}
+
+.inputNumber {
+  width: 277px;
+}
+
+.btn-addSettings {
+  cursor: pointer;
+  font-size: 17px;
+  border-radius: 5px;
+  padding: 4px 15px;
+}
+
+.link-btn {
+  align-self: center;
+}

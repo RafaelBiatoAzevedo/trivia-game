@@ -1,0 +1,14 @@
+.container-feedback {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 200px;
+  margin-top: 20px;
+}
+
+.container-btns-feedback {
+  display: flex;
+  justify-content: space-around;
+  width: 250px;
+}

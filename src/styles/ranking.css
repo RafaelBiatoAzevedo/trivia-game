@@ -1,0 +1,36 @@
+.container-grid-ranking {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 0.6fr 0.5fr 1fr auto;
+  row-gap: 1.5rem;
+}
+
+.container-grid-ranking > div > img {
+  border-radius: 100%;
+}
+
+.container-grid-ranking > div,
+span > p {
+  color: #fff;
+  font-size: 1.4rem;
+}
+
+.content-grid-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 1rem;
+  padding: 0 2rem;
+}
+
+.container-btns {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 2rem;
+  width: 100%;
+}
+
+.container-btns-right {
+  display: flex;
+  gap: 3rem;
+}
