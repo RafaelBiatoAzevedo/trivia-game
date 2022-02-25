@@ -12,6 +12,7 @@ import {
 import { addPlayerInRanking } from '../services/localStorage';
 import Timer from '../components/Timer';
 import Header from '../components/Header';
+import { Button } from '../components/Button';
 import '../styles/play.css';
 
 class Play extends React.Component {
@@ -55,13 +56,13 @@ class Play extends React.Component {
     localStorage.setItem('state', JSON.stringify({ ...dataStorage }));
   }
 
-  styleAnswer(answer, correctAnswer) {
+  styleAnswer(isCorrect) {
     const { answerSelected } = this.state;
+
     if (answerSelected) {
-      if (answer === correctAnswer) {
+      if (isCorrect) {
         return { border: '3px solid rgb(6, 240, 15)' };
-      }
-      if (answer !== correctAnswer) {
+      } else {
         return { border: '3px solid rgb(255, 0, 0)' };
       }
     }
@@ -71,6 +72,7 @@ class Play extends React.Component {
   answerSelected(evt) {
     const { interval } = this.props;
     const { value } = evt.target;
+
     this.setState({ answerSelected: true });
     clearInterval(interval);
     if (value) this.setReduxAndLocalStorage(value);
@@ -90,6 +92,7 @@ class Play extends React.Component {
     const { asks } = this.props;
     const { answerIndex } = this.state;
     const MAX = asks.length - 1;
+
     if (answerIndex === MAX) {
       return (
         <Link className="link-feedback" to="/feedback">
@@ -116,53 +119,46 @@ class Play extends React.Component {
     );
   }
 
-  elementAnswer(answer, testid, index, correctAnswer) {
-    const { answerSelected } = this.state;
-    return (
-      <button
-        className="btn-answer"
-        value={correctAnswer === answer ? answer : ''}
-        disabled={answerSelected}
-        key={index}
-        type="button"
-        data-testid={testid}
-        style={this.styleAnswer(answer, correctAnswer)}
-        onClick={this.answerSelected}
-      >
-        {answer}
-      </button>
-    );
-  }
-
   renderAnswers(answers) {
-    const { answerIndex } = this.state;
+    const { answerIndex, answerSelected } = this.state;
     const { asks } = this.props;
-    return answers.map((answerElement, indexElement) => {
-      const { answer, index } = answerElement;
+
+    return answers.map((answerElement) => {
+      const { answer } = answerElement;
+
       if (answer === asks[answerIndex].correct_answer) {
         return (
-          <div className="btn-answer" key={indexElement}>
-            {this.elementAnswer(
-              answer,
-              'correct-answer',
-              indexElement,
-              asks[answerIndex].correct_answer
-            )}
-          </div>
+          <Button
+            title={answer}
+            textColor="white"
+            textSize="1.6rem"
+            value={answer}
+            disabled={answerSelected}
+            type="button"
+            style={this.styleAnswer(true)}
+            onClick={this.answerSelected}
+            withBorder
+            padding="1rem 3rem"
+          />
         );
       }
       return (
-        <div className="btn-answer" key={indexElement}>
-          {this.elementAnswer(
-            answer,
-            `wrong-answer-${index}`,
-            indexElement,
-            asks[answerIndex].correct_answer
-          )}
-        </div>
+        <Button
+          title={answer}
+          textSize="1.6rem"
+          textColor="white"
+          value={''}
+          disabled={answerSelected}
+          type="button"
+          style={this.styleAnswer(false)}
+          onClick={this.answerSelected}
+          withBorder
+          padding="1rem 3rem"
+        />
       );
     });
   }
+
   render() {
     const { answerIndex, answerSelected } = this.state;
     const { asks, statusTimer, updateStatusProp } = this.props;
@@ -179,17 +175,19 @@ class Play extends React.Component {
         {asks.length > 0 ? (
           <div className="container-ask">
             <h1>{asks[answerIndex].category}</h1>
-            <h3>{asks[answerIndex].question}</h3>
+            <h2>{asks[answerIndex].question}</h2>
             <div className="container-answers">
               {this.renderAnswers(asks[answerIndex].results)}
             </div>
-            {answerSelected &&
-              answerIndex <= MAX_QUESTIONS &&
-              this.elementButtonNext()}
+            <div className="container-btn-next">
+              {answerSelected &&
+                answerIndex <= MAX_QUESTIONS &&
+                this.elementButtonNext()}
+            </div>
             <Timer />
           </div>
         ) : (
-          <div className="loader" style={{ fontSize: '2rem' }}></div>
+          <div className="loader"></div>
         )}
       </div>
     );

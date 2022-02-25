@@ -3,7 +3,7 @@ import '../styles/button.css';
 
 export const Button = ({
   icon,
-  iconEnd = false,
+  value,
   title,
   type = 'button',
   textColor = 'black',
@@ -11,9 +11,14 @@ export const Button = ({
   textWeight = '400',
   onClick,
   withBorder = false,
+  disabled = false,
+  padding = '0.2rem 1rem',
+  style,
 }) => {
   return (
     <button
+      value={value}
+      disabled={disabled}
       className={withBorder ? 'button with-border' : 'button'}
       onClick={onClick}
       type={type}
@@ -21,6 +26,8 @@ export const Button = ({
         color: textColor,
         fontSize: textSize,
         fontWeight: textWeight,
+        padding: padding,
+        ...style,
       }}
     >
       {icon}

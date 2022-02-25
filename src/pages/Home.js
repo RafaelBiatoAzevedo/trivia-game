@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { asyncToken, loginAction } from '../actions';
+import { asyncToken, loginAction, resetAsks } from '../actions';
 import { createRanking } from '../services/localStorage';
 import { getGravatar } from '../serviceAPI';
 import '../styles/home.css';
@@ -19,6 +19,12 @@ class Home extends React.Component {
       email: '',
     };
     this.handleChangeText = this.handleChangeText.bind(this);
+  }
+
+  componentDidMount() {
+    const { clearAsks } = this.props;
+
+    clearAsks();
   }
 
   goFor = (pageName) => {
@@ -149,6 +155,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  clearAsks: () => dispatch(resetAsks()),
   saveToken: (value) => dispatch(asyncToken(value)),
   loginActionFunc: (username, email) => dispatch(loginAction(username, email)),
 });

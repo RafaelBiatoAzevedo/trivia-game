@@ -1,0 +1,21 @@
+.container-header {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.container-header > img {
+  border-radius: 100%;
+}
+
+.container-header > div {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.container-header > div > p {
+  color: #fff;
+  font-size: 1.8rem;
+}

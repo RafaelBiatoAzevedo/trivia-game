@@ -7,62 +7,28 @@
   overflow-y: hidden;
 }
 
-.container-header {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.container-header > img {
-  border-radius: 100%;
-}
-
-.container-header > div {
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-}
-
-.container-header > div > p {
-  color: #fff;
-  font-size: 1.8rem;
-}
-
-.msg-loading {
-  text-align: center;
-  margin: 20px;
-}
-
 .container-ask {
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 20px;
+  height: 100%;
+}
+
+.container-ask > h1 {
+  font-size: 2.5rem;
 }
 
 .container-answers {
-  align-items: center;
+  align-items: stretch;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 400px;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-evenly;
 }
 
-.text-category,
-.text-timer {
-  margin-bottom: 10px;
-}
-
-.btn-answer {
-  background-color: transparent;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 15px;
-  margin: 10px;
-  padding: 5px 10px;
-  width: 140px;
+.container-btn-next {
+  min-height: 4rem;
 }
 
 .btn-next,
