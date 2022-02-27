@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { asyncToken, loginAction, resetAsks } from '../actions';
 import { createRanking } from '../services/localStorage';
-import { getGravatar } from '../serviceAPI';
+import { getGravatar } from '../services/serviceAPI';
+import { Toast } from '../components/Toast';
 import '../styles/home.css';
 
 import { BsFillTrophyFill, BsPlayFill } from 'react-icons/bs';
@@ -17,6 +18,7 @@ class Home extends React.Component {
     this.state = {
       username: '',
       email: '',
+      isShowToast: false,
     };
     this.handleChangeText = this.handleChangeText.bind(this);
   }
@@ -42,26 +44,27 @@ class Home extends React.Component {
     const { username, email } = this.state;
 
     if (!username || !email) {
-      alert('Ops, Insert PlayerName e Email for play !!!');
-      return;
-    }
+      this.setState({ isShowToast: true });
+      setTimeout(() => this.setState({ isShowToast: false }), 10000);
+    } else {
+      const { loginActionFunc, saveToken, settings } = this.props;
+      saveToken(settings);
+      loginActionFunc(username, email);
+      getGravatar(email).then((response) => {
+        const player = {
+          player: {
+            name: username,
+            assertions: 0,
+            score: 0,
+            gravatarEmail: response.url,
+          },
+        };
+        localStorage.setItem('state', JSON.stringify(player));
+      });
 
-    const { loginActionFunc, saveToken, settings } = this.props;
-    saveToken(settings);
-    loginActionFunc(username, email);
-    getGravatar(email).then((response) => {
-      const player = {
-        player: {
-          name: username,
-          assertions: 0,
-          score: 0,
-          gravatarEmail: response.url,
-        },
-      };
-      localStorage.setItem('state', JSON.stringify(player));
-    });
-    createRanking();
-    this.goFor('play');
+      createRanking();
+      this.goFor('play');
+    }
   }
 
   renderForm() {
@@ -107,7 +110,7 @@ class Home extends React.Component {
           textColor="white"
           textSize="1.6rem"
           textWeight="600"
-          type="submit"
+          type="button"
           withBorder
           onClick={() => this.handleClickPlay()}
         />
@@ -116,8 +119,17 @@ class Home extends React.Component {
   }
 
   render() {
+    const { isShowToast } = this.state;
+
     return (
       <div className="container-main">
+        {isShowToast && (
+          <Toast
+            type="error"
+            title="Ops, login empty or invalid !"
+            description="Correcty e try again."
+          />
+        )}
         <div className="container-top">
           {this.renderForm()}
           <Button

@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/ranking.css';
 
 import { Button } from '../components/Button';
+import { Modal } from '../components/Modal';
 import {
   FaArrowLeft,
   FaLongArrowAltUp,
@@ -19,6 +20,7 @@ class Ranking extends React.Component {
     this.state = {
       ranking: [],
       orderRanking: true,
+      openModal: false,
     };
   }
 
@@ -44,6 +46,7 @@ class Ranking extends React.Component {
   resetRanking() {
     localStorage.setItem('ranking', JSON.stringify([]));
     this.setRankingState();
+    this.setState({ openModal: false });
   }
 
   invertRanking() {
@@ -77,7 +80,7 @@ class Ranking extends React.Component {
             textSize="1.4rem"
             textColor="white"
             textWeight="600"
-            onClick={this.resetRanking}
+            onClick={() => this.setState({ openModal: true })}
           />
           <Button
             icon={
@@ -99,10 +102,17 @@ class Ranking extends React.Component {
   }
 
   render() {
-    const { ranking, orderRanking } = this.state;
+    const { ranking, orderRanking, openModal } = this.state;
 
     return (
       <div className="container-main-play">
+        {openModal && (
+          <Modal
+            handleclickCancel={() => this.setState({ openModal: false })}
+            handleClickConfirm={this.resetRanking}
+            text="Do you really want to delete all ?"
+          />
+        )}
         <h1 style={{ color: 'white', fontSize: '3rem', padding: '2rem 0' }}>
           Ranking
         </h1>

@@ -7,8 +7,9 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { DropDown } from '../components/DropDown';
+import { Toast } from '../components/Toast';
 import { updateSettings } from '../actions';
-import { getCategories } from '../serviceAPI';
+import { getCategories } from '../services/serviceAPI';
 import '../styles/settings.css';
 
 const DIFFICULTIES = [
@@ -29,6 +30,7 @@ class Settings extends React.Component {
     this.state = {
       categories: [],
       settings: {},
+      isShowToast: false,
     };
   }
 
@@ -57,12 +59,39 @@ class Settings extends React.Component {
     }));
   }
 
+  handleClickReset = () => {
+    this.setState({
+      settings: {
+        number: 5,
+        category: 'All',
+        difficulty: 'All',
+        type: 'All',
+      },
+    });
+  };
+
+  handleClickSaveSettings = () => {
+    const { saveSettings } = this.props;
+    const { settings } = this.state;
+
+    saveSettings(settings);
+    this.setState({ isShowToast: true });
+    setTimeout(() => this.setState({ isShowToast: false }), 8000);
+  };
+
   render() {
-    const { settings, categories } = this.state;
+    const { settings, categories, isShowToast } = this.state;
     const { number, category, difficulty, type } = settings;
 
     return (
       <div className="container-main-play">
+        {isShowToast && (
+          <Toast
+            type="sucess"
+            title="Settings saved"
+            description="Back to home for play"
+          />
+        )}
         <h1 style={{ color: 'white', fontSize: '3rem', padding: '2rem 0' }}>
           Settings
         </h1>
@@ -121,12 +150,14 @@ class Settings extends React.Component {
               textColor="#fff"
               textSize="1.6rem"
               textWeight="600"
+              onClick={this.handleClickReset}
             ></Button>
             <Button
               title="Save settings"
               textColor="#fff"
               textSize="1.6rem"
               textWeight="600"
+              onClick={this.handleClickSaveSettings}
             ></Button>
           </div>
         </div>

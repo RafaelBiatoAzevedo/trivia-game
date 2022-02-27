@@ -1,10 +1,11 @@
 .container-main-play {
+  position: relative;
   align-items: center;
   background-color: #6e1920;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .container-ask {

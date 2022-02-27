@@ -4,7 +4,7 @@ import '../styles/button.css';
 export const Button = ({
   icon,
   value,
-  title,
+  title = '',
   type = 'button',
   textColor = 'black',
   textSize = '1rem',
@@ -14,8 +14,26 @@ export const Button = ({
   disabled = false,
   padding = '0.2rem 1rem',
   style,
+  isBtnAnswer = false,
 }) => {
-  return (
+  return isBtnAnswer ? (
+    <button
+      value={value}
+      disabled={disabled}
+      className={withBorder ? 'button with-border' : 'button'}
+      onClick={onClick}
+      type={type}
+      style={{
+        color: textColor,
+        fontSize: textSize,
+        fontWeight: textWeight,
+        padding: padding,
+        ...style,
+      }}
+    >
+      {title}
+    </button>
+  ) : (
     <button
       value={value}
       disabled={disabled}

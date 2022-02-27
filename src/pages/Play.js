@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
   saveScore,
   saveInterval,
@@ -10,6 +9,10 @@ import {
   updateStatus,
 } from '../actions';
 import { addPlayerInRanking } from '../services/localStorage';
+import { decodeHtml } from '../services/prepareAnswers';
+import { CgPlayTrackNextO } from 'react-icons/cg';
+import { GiExitDoor } from 'react-icons/gi';
+
 import Timer from '../components/Timer';
 import Header from '../components/Header';
 import { Button } from '../components/Button';
@@ -25,12 +28,18 @@ class Play extends React.Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.styleAnswer = this.styleAnswer.bind(this);
     this.answerSelected = this.answerSelected.bind(this);
+    this.setRanking = this.setRanking.bind(this);
   }
 
   setRanking() {
     const { player } = JSON.parse(localStorage.getItem('state'));
     addPlayerInRanking(player.gravatarEmail, player);
+    this.goFor('feedback');
   }
+
+  goFor = (pageName) => {
+    this.props.history.push(`/${pageName}`);
+  };
 
   setReduxAndLocalStorage(answer) {
     const { asks, time } = this.props;
@@ -88,34 +97,32 @@ class Play extends React.Component {
     saveIntervalProp(interval);
   }
 
-  elementButtonNext() {
+  btnNext() {
     const { asks } = this.props;
     const { answerIndex } = this.state;
     const MAX = asks.length - 1;
 
     if (answerIndex === MAX) {
       return (
-        <Link className="link-feedback" to="/feedback">
-          <button
-            className="btn-finish"
-            onClick={this.setRanking}
-            type="button"
-            data-testid="btn-next"
-          >
-            Finish
-          </button>
-        </Link>
+        <Button
+          icon={<GiExitDoor color="#3babc4" size="3rem" />}
+          title="Finish"
+          textColor="#3babc4"
+          textSize="2rem"
+          type="button"
+          onClick={this.setRanking}
+        />
       );
     }
     return (
-      <button
-        className="btn-next"
+      <Button
+        icon={<CgPlayTrackNextO color="#49a356" size="3rem" />}
+        title="Next"
+        textColor="#49a356"
+        textSize="2rem"
         type="button"
-        data-testid="btn-next"
         onClick={this.nextQuestion}
-      >
-        Next
-      </button>
+      />
     );
   }
 
@@ -129,7 +136,8 @@ class Play extends React.Component {
       if (answer === asks[answerIndex].correct_answer) {
         return (
           <Button
-            title={answer}
+            title={decodeHtml(answer)}
+            isBtnAnswer
             textColor="white"
             textSize="1.6rem"
             value={answer}
@@ -144,7 +152,8 @@ class Play extends React.Component {
       }
       return (
         <Button
-          title={answer}
+          title={decodeHtml(answer)}
+          isBtnAnswer
           textSize="1.6rem"
           textColor="white"
           value={''}
@@ -174,15 +183,13 @@ class Play extends React.Component {
         <Header />
         {asks.length > 0 ? (
           <div className="container-ask">
-            <h1>{asks[answerIndex].category}</h1>
-            <h2>{asks[answerIndex].question}</h2>
+            <h1>{decodeHtml(asks[answerIndex].category)}</h1>
+            <h2>{decodeHtml(asks[answerIndex].question)}</h2>
             <div className="container-answers">
               {this.renderAnswers(asks[answerIndex].results)}
             </div>
             <div className="container-btn-next">
-              {answerSelected &&
-                answerIndex <= MAX_QUESTIONS &&
-                this.elementButtonNext()}
+              {answerSelected && answerIndex <= MAX_QUESTIONS && this.btnNext()}
             </div>
             <Timer />
           </div>
@@ -209,6 +216,7 @@ const mapStateToProps = (state) => ({
   interval: state.timer.interval,
   time: state.timer.time,
   statusTimer: state.timer.statusFinishTimer,
+  player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({

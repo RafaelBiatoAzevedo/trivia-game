@@ -1,0 +1,40 @@
+.container-overflow {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.container-modal {
+  align-items: center;
+  background-color: #fff;
+  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 4rem;
+
+  padding: 2rem 4rem;
+}
+
+.container-modal > p {
+  color: black;
+  font-size: 2rem;
+}
+
+.container-modal > div {
+  display: flex;
+  gap: 3rem;
+  width: 100%;
+}
+
+.container-modal > div > button {
+  flex: 1;
+}

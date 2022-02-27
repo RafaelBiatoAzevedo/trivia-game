@@ -8,15 +8,22 @@ const randomArray = (array) => {
   return array;
 };
 
-const prepareAnswers = (asks) => {
+export const prepareAnswers = (asks) => {
   asks.forEach((ask) => {
-    const { correct_answer: correctAnswer, incorrect_answers: incorrectAnswers } = ask;
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers,
+    } = ask;
     const allAnswers = [];
     allAnswers.push({ answer: correctAnswer, index: 0 });
-    incorrectAnswers.forEach((item, index) => allAnswers.push({ answer: item, index }));
+    incorrectAnswers.forEach((item, index) =>
+      allAnswers.push({ answer: item, index })
+    );
     ask.results = randomArray(allAnswers);
   });
   return asks;
 };
 
-export default prepareAnswers;
+export const decodeHtml = (string) => {
+  return string.replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+};

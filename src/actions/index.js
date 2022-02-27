@@ -1,5 +1,5 @@
-import { getToken, getAsks, getGravatar } from '../serviceAPI';
-import prepareAnswers from '../services/prepareAnswers';
+import { getToken, getAsks, getGravatar } from '../services/serviceAPI';
+import { prepareAnswers } from '../services/prepareAnswers';
 
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
@@ -10,11 +10,16 @@ export const SAVE_INTERVAL = 'SAVE_INTERVAL';
 export const RESTART_TIME = 'RESTART_TIME';
 export const UPDATE_STATUS = 'UPDATE_STATUS';
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
+export const RESET_SETTINGS = 'RESET_SETTINGS';
 export const RESET_ASKS = 'RESET_ASKS';
 
-export const updateSettings = (objSettings) => ({
+export const resetSettings = () => ({
+  type: RESET_SETTINGS,
+});
+
+export const updateSettings = (settings) => ({
   type: UPDATE_SETTINGS,
-  objSettings,
+  settings,
 });
 
 export const updateStatus = () => ({

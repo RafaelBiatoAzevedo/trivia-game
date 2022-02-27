@@ -1,0 +1,33 @@
+.container-toast {
+  align-items: flex-start;
+  display: flex;
+  white-space: nowrap;
+  gap: 2rem;
+  padding: 2rem 10rem 2rem 2rem;
+
+  -webkit-box-shadow: -3px 2px 12px 1px rgb(109, 105, 105);
+  box-shadow: -3px 2px 12px 1px rgb(109, 105, 105);
+
+  position: absolute;
+  top: 5rem;
+  left: 101%;
+
+  animation: fadeInToast 10s cubic-bezier(0.1, 1, 0, 1);
+}
+
+.container-toast > div {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes fadeInToast {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
