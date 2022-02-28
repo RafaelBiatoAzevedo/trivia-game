@@ -1,9 +1,11 @@
 .container-settings {
+  align-items: center;
   display: flex;
   flex-direction: column;
 }
 
 .container-settings > label {
+  align-self: flex-start;
   color: #fff;
   font-size: 1.4rem;
   padding-left: 1rem;
@@ -12,4 +14,10 @@
 .container-settings > input,
 select {
   margin-bottom: 2rem;
+}
+
+.container-settings > div {
+  display: flex;
+  gap: 4rem;
+  padding: 2rem 0;
 }

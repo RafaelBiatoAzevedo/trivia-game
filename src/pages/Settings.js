@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { FaArrowLeft } from 'react-icons/fa';
+import { MdSaveAlt } from 'react-icons/md';
+import { BiReset } from 'react-icons/bi';
+import { HiHome } from 'react-icons/hi';
 
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
@@ -97,9 +99,9 @@ class Settings extends React.Component {
         </h1>
         <div className="container-btns">
           <Button
-            icon={<FaArrowLeft size="1.6rem" />}
+            icon={<HiHome size="1.6rem" />}
             title="Home"
-            textSize="1.4rem"
+            textSize="1.6rem"
             textColor="white"
             textWeight="600"
             onClick={() => this.goFor('')}
@@ -144,9 +146,11 @@ class Settings extends React.Component {
             value={type}
             onChange={(evt) => this.updateSettings(evt)}
           ></DropDown>
-          <div className="container-btns">
+          <div>
             <Button
               title="Reset default"
+              icon={<BiReset size="1.6rem" />}
+              withBorder
               textColor="#fff"
               textSize="1.6rem"
               textWeight="600"
@@ -154,6 +158,8 @@ class Settings extends React.Component {
             ></Button>
             <Button
               title="Save settings"
+              icon={<MdSaveAlt size="1.6rem" />}
+              withBorder
               textColor="#fff"
               textSize="1.6rem"
               textWeight="600"

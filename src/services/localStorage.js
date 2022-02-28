@@ -1,18 +1,11 @@
 export function createRanking() {
-  const ranking = JSON.parse(localStorage.getItem('ranking'));
-  if (!ranking) localStorage.setItem('ranking', JSON.stringify([]));
-}
-
-export function getCurrentPlayerInfos() {
-  const ranking = JSON.parse(localStorage.getItem('ranking'));
-  const currentPlayer = ranking[ranking.length - 1];
-  const { name, gravatarEmail, score } = currentPlayer;
-  return { name, gravatarEmail, score };
+  const ranking = JSON.parse(localStorage.getItem('@TriviaGame:ranking'));
+  if (!ranking) localStorage.setItem('@TriviaGame:ranking', JSON.stringify([]));
 }
 
 export function addPlayerInRanking(gravatarEmail, player) {
-  const ranking = JSON.parse(localStorage.getItem('ranking'));
+  const ranking = JSON.parse(localStorage.getItem('@TriviaGame:ranking'));
   ranking.push(player);
   ranking.sort((playerOne, playerTWO) => playerTWO.score - playerOne.score);
-  localStorage.setItem('ranking', JSON.stringify(ranking));
+  localStorage.setItem('@TriviaGame:ranking', JSON.stringify(ranking));
 }

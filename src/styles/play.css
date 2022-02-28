@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
 }
 
@@ -29,29 +30,10 @@
 }
 
 .container-btn-next {
+  align-items: center;
+  display: flex;
+  justify-content: center;
   min-height: 4rem;
-}
-
-.btn-next,
-.btn-finish {
-  align-self: center;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 3px 0;
-  width: 80px;
-  margin-bottom: 10px;
-}
-
-.btn-next {
-  background-color: rgb(3, 128, 3);
-}
-
-.btn-finish {
-  background-color: yellow;
-}
-
-.link-feedback {
-  align-self: center;
 }
 
 .loader {

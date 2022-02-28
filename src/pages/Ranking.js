@@ -3,11 +3,8 @@ import '../styles/ranking.css';
 
 import { Button } from '../components/Button';
 import { Modal } from '../components/Modal';
-import {
-  FaArrowLeft,
-  FaLongArrowAltUp,
-  FaLongArrowAltDown,
-} from 'react-icons/fa';
+import { FaLongArrowAltUp, FaLongArrowAltDown } from 'react-icons/fa';
+import { HiHome } from 'react-icons/hi';
 import { MdDelete } from 'react-icons/md';
 import { BsTrophyFill } from 'react-icons/bs';
 
@@ -39,12 +36,12 @@ class Ranking extends React.Component {
   }
 
   setRankingState() {
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const ranking = JSON.parse(localStorage.getItem('@TriviaGame:ranking'));
     if (ranking) this.setState({ ranking });
   }
 
   resetRanking() {
-    localStorage.setItem('ranking', JSON.stringify([]));
+    localStorage.setItem('@TriviaGame:ranking', JSON.stringify([]));
     this.setRankingState();
     this.setState({ openModal: false });
   }
@@ -66,9 +63,9 @@ class Ranking extends React.Component {
     return (
       <div className="container-btns">
         <Button
-          icon={<FaArrowLeft size="1.6rem" />}
+          icon={<HiHome size="1.6rem" />}
           title="Home"
-          textSize="1.4rem"
+          textSize="1.6rem"
           textColor="white"
           textWeight="600"
           onClick={() => this.goFor('')}
@@ -77,7 +74,7 @@ class Ranking extends React.Component {
           <Button
             icon={<MdDelete size="1.6rem" />}
             title="Clear"
-            textSize="1.4rem"
+            textSize="1.6rem"
             textColor="white"
             textWeight="600"
             onClick={() => this.setState({ openModal: true })}
@@ -91,7 +88,7 @@ class Ranking extends React.Component {
               )
             }
             title="Invert "
-            textSize="1.4rem"
+            textSize="1.6rem"
             textColor="white"
             textWeight="600"
             onClick={this.invertRanking}

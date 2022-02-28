@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  saveScore,
+  savePlayer,
   saveInterval,
   setTime,
   restartTime,
@@ -32,7 +32,7 @@ class Play extends React.Component {
   }
 
   setRanking() {
-    const { player } = JSON.parse(localStorage.getItem('state'));
+    const player = JSON.parse(localStorage.getItem('@TriviaGame:player'));
     addPlayerInRanking(player.gravatarEmail, player);
     this.goFor('feedback');
   }
@@ -41,28 +41,25 @@ class Play extends React.Component {
     this.props.history.push(`/${pageName}`);
   };
 
-  setReduxAndLocalStorage(answer) {
-    const { asks, time } = this.props;
+  updateScore(answer) {
+    const { asks, timer, player, savePlayer } = this.props;
     const ask = asks.find((askItem) => answer === askItem.correct_answer);
     const { difficulty } = ask;
     const valuePattern = 10;
-    const valueHard = 3;
-    let valueDifficulty = 0;
+    const valueDifficulty =
+      difficulty === 'hard' ? 3 : difficulty === 'medium' ? 2 : 1;
+    const scoreAsk = valuePattern + timer.time * valueDifficulty;
 
-    if (difficulty === 'hard') valueDifficulty = valueHard;
-    else if (difficulty === 'medium') valueDifficulty = 2;
-    else valueDifficulty = 1;
-    const score = valuePattern + time * valueDifficulty;
-    const dataStorage = { ...JSON.parse(localStorage.getItem('state')) };
-    dataStorage.player.score += score;
-    this.updateScore(dataStorage);
-  }
+    const updatePlayer = { ...player };
 
-  updateScore(dataStorage) {
-    const { savScore } = this.props;
-    dataStorage.player.assertions += 1;
-    savScore(dataStorage.player.score);
-    localStorage.setItem('state', JSON.stringify({ ...dataStorage }));
+    updatePlayer.score += scoreAsk;
+    updatePlayer.assertions += 1;
+
+    localStorage.setItem(
+      '@TriviaGame:player',
+      JSON.stringify({ ...updatePlayer })
+    );
+    savePlayer(updatePlayer);
   }
 
   styleAnswer(isCorrect) {
@@ -79,12 +76,12 @@ class Play extends React.Component {
   }
 
   answerSelected(evt) {
-    const { interval } = this.props;
+    const { timer } = this.props;
     const { value } = evt.target;
 
     this.setState({ answerSelected: true });
-    clearInterval(interval);
-    if (value) this.setReduxAndLocalStorage(value);
+    clearInterval(timer.interval);
+    if (value) this.updateScore(value);
   }
 
   nextQuestion() {
@@ -105,7 +102,8 @@ class Play extends React.Component {
     if (answerIndex === MAX) {
       return (
         <Button
-          icon={<GiExitDoor color="#3babc4" size="3rem" />}
+          className="button-finish"
+          icon={<GiExitDoor size="3rem" />}
           title="Finish"
           textColor="#3babc4"
           textSize="2rem"
@@ -116,7 +114,8 @@ class Play extends React.Component {
     }
     return (
       <Button
-        icon={<CgPlayTrackNextO color="#49a356" size="3rem" />}
+        className="button-next"
+        icon={<CgPlayTrackNextO size="3rem" />}
         title="Next"
         textColor="#49a356"
         textSize="2rem"
@@ -170,10 +169,10 @@ class Play extends React.Component {
 
   render() {
     const { answerIndex, answerSelected } = this.state;
-    const { asks, statusTimer, updateStatusProp } = this.props;
+    const { asks, timer, updateStatusProp } = this.props;
     const MAX_QUESTIONS = asks.length - 1;
 
-    if (statusTimer) {
+    if (timer.statusFinishTimer) {
       this.setState({ answerSelected: true });
       updateStatusProp();
     }
@@ -203,24 +202,31 @@ class Play extends React.Component {
 
 Play.propTypes = {
   asks: PropTypes.arrayOf(PropTypes.object),
+  timer: PropTypes.shape({
+    time: PropTypes.number,
+    interval: PropTypes.number,
+    statusFinishTimer: PropTypes.bool,
+  }),
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    gravatarEmail: PropTypes.string,
+  }),
   savScore: PropTypes.func,
   setTimeProp: PropTypes.func,
   saveIntervalProp: PropTypes.func,
   restartTimeProp: PropTypes.func,
-  interval: PropTypes.number,
-  time: PropTypes.number,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
   asks: state.askAndAnswersReducer,
-  interval: state.timer.interval,
-  time: state.timer.time,
-  statusTimer: state.timer.statusFinishTimer,
+  timer: state.timer,
   player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  savScore: (score) => dispatch(saveScore(score)),
+  savePlayer: (player) => dispatch(savePlayer(player)),
   setTimeProp: (value) => dispatch(setTime(value)),
   saveIntervalProp: (value) => dispatch(saveInterval(value)),
   restartTimeProp: () => dispatch(restartTime()),

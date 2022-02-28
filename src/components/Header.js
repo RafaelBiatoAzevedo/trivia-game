@@ -5,7 +5,7 @@ import '../styles/header.css';
 
 class Header extends React.Component {
   render() {
-    const { name, score, avatar } = this.props;
+    const { name, score, gravatarEmail: avatar } = this.props.player;
     return (
       <header className="container-header">
         <img src={avatar} alt="userImage" />
@@ -19,15 +19,16 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  name: state.player.name,
-  avatar: state.player.gravatarEmail,
-  score: state.player.score,
+  player: state.player,
 });
 
 Header.propTypes = {
-  name: PropTypes.string.isRequired,
-  avatar: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    assertions: PropTypes.number.isRequired,
+    score: PropTypes.number.isRequired,
+    gravatarEmail: PropTypes.string.isRequired,
+  }),
 };
 
 export default connect(mapStateToProps)(Header);

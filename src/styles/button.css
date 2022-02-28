@@ -19,3 +19,11 @@
   border-radius: 100px;
   color: #000 !important;
 }
+
+.button-next:hover {
+  color: #49a356 !important;
+}
+
+.button-finish:hover {
+  color: #3babc4 !important;
+}

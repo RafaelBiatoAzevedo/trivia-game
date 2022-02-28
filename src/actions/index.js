@@ -1,10 +1,9 @@
-import { getToken, getAsks, getGravatar } from '../services/serviceAPI';
+import { getToken, getAsks } from '../services/serviceAPI';
 import { prepareAnswers } from '../services/prepareAnswers';
 
-export const LOGIN = 'LOGIN';
-export const TOKEN = 'TOKEN';
+export const SAVE_TOKEN = 'SAVE_TOKEN';
 export const SAVE_ASKS = 'SAVE_ASKS';
-export const SAVE_SCORE = 'SAVE_SCORE';
+export const SAVE_PLAYER = 'SAVE_PLAYER';
 export const SET_TIME = 'SET_TIME';
 export const SAVE_INTERVAL = 'SAVE_INTERVAL';
 export const RESTART_TIME = 'RESTART_TIME';
@@ -40,15 +39,9 @@ export const setTime = (value) => ({
   value,
 });
 
-export const saveScore = (score) => ({
-  type: SAVE_SCORE,
-  score,
-});
-
-export const login = (username, email) => ({
-  type: LOGIN,
-  username,
-  email,
+export const savePlayerAction = (player) => ({
+  type: SAVE_PLAYER,
+  player,
 });
 
 export const saveAsks = (asks) => ({
@@ -60,23 +53,22 @@ export const resetAsks = () => ({
   type: RESET_ASKS,
 });
 
-export const tokenAction = (token) => ({
-  type: TOKEN,
+export const saveToken = (token) => ({
+  type: SAVE_TOKEN,
   token,
 });
 
-export const asyncToken = (settings) => (dispatch) => {
+export const savePlayer = (player) => (dispatch) => {
+  localStorage.setItem('@TriviaGame:player', JSON.stringify(player));
+  dispatch(savePlayerAction(player));
+};
+
+export const createAsks = (settings) => (dispatch) => {
   getToken().then((response) => {
-    localStorage.setItem('token', response.token);
-    dispatch(tokenAction(response.token));
+    localStorage.setItem('@TriviaGame:token', response.token);
+    dispatch(saveToken(response.token));
     getAsks(response.token, settings).then((responseAsks) =>
       dispatch(saveAsks(prepareAnswers(responseAsks.results)))
     );
   });
-};
-
-export const loginAction = (username, email) => (dispatch) => {
-  getGravatar(email).then((response) =>
-    dispatch(login(username, response.url))
-  );
 };

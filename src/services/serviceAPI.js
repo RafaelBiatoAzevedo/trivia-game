@@ -29,7 +29,7 @@ export const getGravatar = async (email) => {
   const requestFetch = await fetch(
     `https://www.gravatar.com/avatar/${emailHash}`
   );
-  return requestFetch;
+  return requestFetch.url;
 };
 
 export const getCategories = async () => {

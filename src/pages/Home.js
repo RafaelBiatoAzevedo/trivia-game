@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { asyncToken, loginAction, resetAsks } from '../actions';
+import { createAsks, resetAsks, savePlayer } from '../actions';
 import { createRanking } from '../services/localStorage';
 import { getGravatar } from '../services/serviceAPI';
 import { Toast } from '../components/Toast';
@@ -21,11 +21,12 @@ class Home extends React.Component {
       isShowToast: false,
     };
     this.handleChangeText = this.handleChangeText.bind(this);
+    this.handleClickPlay = this.handleClickPlay.bind(this);
   }
 
   componentDidMount() {
     const { clearAsks } = this.props;
-
+    localStorage.setItem('@TriviaGame:player', JSON.stringify({}));
     clearAsks();
   }
 
@@ -40,32 +41,30 @@ class Home extends React.Component {
     });
   }
 
-  handleClickPlay() {
+  handleClickPlay = async () => {
     const { username, email } = this.state;
+    const { savePlayer, createAsks, settings } = this.props;
 
     if (!username || !email) {
       this.setState({ isShowToast: true });
       setTimeout(() => this.setState({ isShowToast: false }), 10000);
     } else {
-      const { loginActionFunc, saveToken, settings } = this.props;
-      saveToken(settings);
-      loginActionFunc(username, email);
+      createAsks(settings);
       getGravatar(email).then((response) => {
         const player = {
-          player: {
-            name: username,
-            assertions: 0,
-            score: 0,
-            gravatarEmail: response.url,
-          },
+          name: username,
+          email: email,
+          assertions: 0,
+          score: 0,
+          gravatarEmail: response,
         };
-        localStorage.setItem('state', JSON.stringify(player));
+        savePlayer(player);
       });
 
       createRanking();
       this.goFor('play');
     }
-  }
+  };
 
   renderForm() {
     const { username, email } = this.state;
@@ -112,7 +111,7 @@ class Home extends React.Component {
           textWeight="600"
           type="button"
           withBorder
-          onClick={() => this.handleClickPlay()}
+          onClick={this.handleClickPlay}
         />
       </form>
     );
@@ -126,7 +125,7 @@ class Home extends React.Component {
         {isShowToast && (
           <Toast
             type="error"
-            title="Ops, login empty or invalid !"
+            title="Ops, PlayerName or email invalid !"
             description="Correcty e try again."
           />
         )}
@@ -139,7 +138,7 @@ class Home extends React.Component {
             textWeight="600"
             textSize="1.6rem"
             onClick={() => this.goFor('ranking')}
-          ></Button>
+          />
           <Button
             icon={<IoMdSettings size="1.8rem" />}
             title="Settings"
@@ -147,7 +146,7 @@ class Home extends React.Component {
             textWeight="600"
             textSize="1.6rem"
             onClick={() => this.goFor('settings')}
-          ></Button>
+          />
         </div>
         <p className="message-home">Test your knowledge</p>
         <h1 className="title-home">GAME</h1>
@@ -157,9 +156,15 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  saveToken: PropTypes.func.isRequired,
-  loginActionFunc: PropTypes.func.isRequired,
-  settings: PropTypes.objectOf().isRequired,
+  settings: PropTypes.shape({
+    number: PropTypes.number.isRequired,
+    category: PropTypes.string.isRequired,
+    difficulty: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  }),
+  createAsks: PropTypes.func.isRequired,
+  clearAsks: PropTypes.func.isRequired,
+  savePlayer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -167,9 +172,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  savePlayer: (player) => dispatch(savePlayer(player)),
   clearAsks: () => dispatch(resetAsks()),
-  saveToken: (value) => dispatch(asyncToken(value)),
-  loginActionFunc: (username, email) => dispatch(loginAction(username, email)),
+  createAsks: (settings) => dispatch(createAsks(settings)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

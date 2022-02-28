@@ -15,12 +15,15 @@ export const Button = ({
   padding = '0.2rem 1rem',
   style,
   isBtnAnswer = false,
+  className,
 }) => {
   return isBtnAnswer ? (
     <button
       value={value}
       disabled={disabled}
-      className={withBorder ? 'button with-border' : 'button'}
+      className={
+        withBorder ? `button with-border ${className}` : `button ${className}`
+      }
       onClick={onClick}
       type={type}
       style={{
@@ -37,7 +40,9 @@ export const Button = ({
     <button
       value={value}
       disabled={disabled}
-      className={withBorder ? 'button with-border' : 'button'}
+      className={
+        withBorder ? `button with-border ${className}` : `button ${className}`
+      }
       onClick={onClick}
       type={type}
       style={{
