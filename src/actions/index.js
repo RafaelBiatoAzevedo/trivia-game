@@ -10,7 +10,13 @@ export const RESTART_TIME = 'RESTART_TIME';
 export const UPDATE_STATUS = 'UPDATE_STATUS';
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 export const RESET_SETTINGS = 'RESET_SETTINGS';
-export const RESET_ASKS = 'RESET_ASKS';
+export const RESET_GAME = 'RESET_GAME';
+export const SET_STATUS_GAME = 'SET_STATUS_GAME';
+
+export const setStatusGame = (status) => ({
+  type: SET_STATUS_GAME,
+  status,
+});
 
 export const resetSettings = () => ({
   type: RESET_SETTINGS,
@@ -49,8 +55,8 @@ export const saveAsks = (asks) => ({
   asks,
 });
 
-export const resetAsks = () => ({
-  type: RESET_ASKS,
+export const resetGame = () => ({
+  type: RESET_GAME,
 });
 
 export const saveToken = (token) => ({

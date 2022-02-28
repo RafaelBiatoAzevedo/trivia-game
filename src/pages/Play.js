@@ -30,6 +30,11 @@ class Play extends React.Component {
     this.answerSelected = this.answerSelected.bind(this);
     this.setRanking = this.setRanking.bind(this);
   }
+  componentDidMount() {
+    const { status } = this.props.game;
+
+    if (!status) this.goFor('');
+  }
 
   setRanking() {
     const player = JSON.parse(localStorage.getItem('@TriviaGame:player'));
@@ -42,7 +47,8 @@ class Play extends React.Component {
   };
 
   updateScore(answer) {
-    const { asks, timer, player, savePlayer } = this.props;
+    const { game, timer, player, savePlayer } = this.props;
+    const { asks } = game;
     const ask = asks.find((askItem) => answer === askItem.correct_answer);
     const { difficulty } = ask;
     const valuePattern = 10;
@@ -95,7 +101,7 @@ class Play extends React.Component {
   }
 
   btnNext() {
-    const { asks } = this.props;
+    const { asks } = this.props.game;
     const { answerIndex } = this.state;
     const MAX = asks.length - 1;
 
@@ -103,7 +109,7 @@ class Play extends React.Component {
       return (
         <Button
           className="button-finish"
-          icon={<GiExitDoor size="3rem" />}
+          icon={<GiExitDoor size="2.8rem" />}
           title="Finish"
           textColor="#3babc4"
           textSize="2rem"
@@ -127,7 +133,7 @@ class Play extends React.Component {
 
   renderAnswers(answers) {
     const { answerIndex, answerSelected } = this.state;
-    const { asks } = this.props;
+    const { asks } = this.props.game;
 
     return answers.map((answerElement) => {
       const { answer } = answerElement;
@@ -169,7 +175,8 @@ class Play extends React.Component {
 
   render() {
     const { answerIndex, answerSelected } = this.state;
-    const { asks, timer, updateStatusProp } = this.props;
+    const { game, timer, updateStatusProp } = this.props;
+    const { asks } = game;
     const MAX_QUESTIONS = asks.length - 1;
 
     if (timer.statusFinishTimer) {
@@ -201,26 +208,29 @@ class Play extends React.Component {
 }
 
 Play.propTypes = {
-  asks: PropTypes.arrayOf(PropTypes.object),
+  game: PropTypes.shape({
+    asks: PropTypes.arrayOf(PropTypes.object).isRequired,
+    status: PropTypes.bool.isRequired,
+  }),
   timer: PropTypes.shape({
-    time: PropTypes.number,
-    interval: PropTypes.number,
-    statusFinishTimer: PropTypes.bool,
+    time: PropTypes.number.isRequired,
+    interval: PropTypes.number.isRequired,
+    statusFinishTimer: PropTypes.bool.isRequired,
   }),
   player: PropTypes.shape({
-    name: PropTypes.string,
-    assertions: PropTypes.number,
-    score: PropTypes.number,
-    gravatarEmail: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    assertions: PropTypes.number.isRequired,
+    score: PropTypes.number.isRequired,
+    gravatarEmail: PropTypes.string.isRequired,
   }),
-  savScore: PropTypes.func,
-  setTimeProp: PropTypes.func,
-  saveIntervalProp: PropTypes.func,
-  restartTimeProp: PropTypes.func,
+  savScore: PropTypes.func.isRequired,
+  setTimeProp: PropTypes.func.isRequired,
+  saveIntervalProp: PropTypes.func.isRequired,
+  restartTimeProp: PropTypes.func.isRequired,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
-  asks: state.askAndAnswersReducer,
+  game: state.game,
   timer: state.timer,
   player: state.player,
 });

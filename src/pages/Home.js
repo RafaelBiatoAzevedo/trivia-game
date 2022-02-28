@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createAsks, resetAsks, savePlayer } from '../actions';
+import { createAsks, resetGame, savePlayer, setStatusGame } from '../actions';
 import { createRanking } from '../services/localStorage';
 import { getGravatar } from '../services/serviceAPI';
 import { Toast } from '../components/Toast';
@@ -25,9 +25,9 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    const { clearAsks } = this.props;
+    const { resetGame } = this.props;
     localStorage.setItem('@TriviaGame:player', JSON.stringify({}));
-    clearAsks();
+    resetGame();
   }
 
   goFor = (pageName) => {
@@ -43,12 +43,13 @@ class Home extends React.Component {
 
   handleClickPlay = async () => {
     const { username, email } = this.state;
-    const { savePlayer, createAsks, settings } = this.props;
+    const { savePlayer, createAsks, settings, setStatusGame } = this.props;
 
     if (!username || !email) {
       this.setState({ isShowToast: true });
       setTimeout(() => this.setState({ isShowToast: false }), 10000);
     } else {
+      setStatusGame(true);
       createAsks(settings);
       getGravatar(email).then((response) => {
         const player = {
@@ -165,6 +166,7 @@ Home.propTypes = {
   createAsks: PropTypes.func.isRequired,
   clearAsks: PropTypes.func.isRequired,
   savePlayer: PropTypes.func.isRequired,
+  setStatusGame: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -173,8 +175,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   savePlayer: (player) => dispatch(savePlayer(player)),
-  clearAsks: () => dispatch(resetAsks()),
+  resetGame: () => dispatch(resetGame()),
   createAsks: (settings) => dispatch(createAsks(settings)),
+  setStatusGame: (status) => dispatch(setStatusGame(status)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import player from './player';
-import askAndAnswersReducer from './askAndAnswerReducer';
+import game from './game';
 import token from './token';
 import timer from './timer';
 import settings from './settings';
 
 const rootReducer = combineReducers({
   player,
-  askAndAnswersReducer,
+  game,
   token,
   timer,
   settings,

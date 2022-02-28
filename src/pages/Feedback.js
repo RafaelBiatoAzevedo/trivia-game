@@ -6,7 +6,7 @@ import '../styles/feedback.css';
 import { Button } from '../components/Button';
 import { BsFillTrophyFill, BsPlayFill } from 'react-icons/bs';
 import { HiHome } from 'react-icons/hi';
-import { createAsks, savePlayer } from '../actions';
+import { createAsks, resetGame, savePlayer, setStatusGame } from '../actions';
 
 class Feedback extends React.Component {
   messageAssertions = () => {
@@ -23,14 +23,21 @@ class Feedback extends React.Component {
     else return 'Bad !!!, you have a lot to improve';
   };
 
+  componentDidMount() {
+    const { resetGame } = this.props;
+    resetGame();
+  }
+
   goFor = (pageName) => {
     this.props.history.push(`/${pageName}`);
   };
 
   playAgain = () => {
-    const { createAsks, settings, savePlayer, player } = this.props;
+    const { createAsks, settings, savePlayer, player, setStatusGame } =
+      this.props;
     const resetPlayer = { ...player, score: 0, assertions: 0 };
 
+    setStatusGame(true);
     savePlayer(resetPlayer);
     createAsks(settings);
     this.goFor('play');
@@ -94,6 +101,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   createAsks: (settings) => dispatch(createAsks(settings)),
+  setStatusGame: (status) => dispatch(setStatusGame(status)),
+  resetGame: () => dispatch(resetGame()),
   savePlayer: (player) => dispatch(savePlayer(player)),
 });
 
