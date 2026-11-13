@@ -33,6 +33,6 @@ A implementação anterior está em `legacy/` para consulta e não é usada pelo
 
 ## Deploy no Netlify
 
-O `netlify.toml` configura o comando `npm run build`, a publicação de `dist/` e a instalação das dependências de desenvolvimento necessárias ao TypeScript. Use a raiz do repositório como diretório base; `legacy/` contém a versão anterior.
+O `netlify.toml` executa `npm ci --include=dev && npm run build`, publica `dist/` e usa Node.js 22. A instalação limpa no início do build garante as versões do `package-lock.json`, incluindo os tipos necessários ao TypeScript, mesmo quando há dependências antigas no cache. Use a raiz do repositório como diretório base; `legacy/` contém a versão anterior.
 
 Depois de enviar alterações na configuração ou nas dependências, faça um novo deploy com o cache limpo no Netlify para descartar dependências antigas.
