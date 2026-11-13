@@ -30,3 +30,9 @@ npm run dev
 O banco local limita a rodada às perguntas disponíveis para os filtros escolhidos e informa quando a quantidade solicitada não pode ser atendida. Ranking, perfil e preferências são armazenados no navegador. Não há servidor, contas ou ranking global. A fonte web e o Gravatar precisam de internet; o funcionamento do banco local não depende deles.
 
 A implementação anterior está em `legacy/` para consulta e não é usada pelo build. O arquivo `package-lock.json` é o lockfile da nova versão; use npm na raiz.
+
+## Deploy no Netlify
+
+O `netlify.toml` configura o comando `npm run build`, a publicação de `dist/` e a instalação das dependências de desenvolvimento necessárias ao TypeScript. Use a raiz do repositório como diretório base; `legacy/` contém a versão anterior.
+
+Depois de enviar alterações na configuração ou nas dependências, faça um novo deploy com o cache limpo no Netlify para descartar dependências antigas.
